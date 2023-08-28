@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.DepartmentDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.Department">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM department WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Department">
+        INSERT INTO department(name) VALUES(#{name})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Department">
+        UPDATE department SET name = #{name} WHERE id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT id, name FROM department WHERE id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT id, name FROM department
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="keyword != null">
+                AND name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM department <include refid="conditionSql"/>
+    </select>
+    <select id="queryByCondition" resultMap="BaseResultMap">
+        SELECT id, name FROM department <include refid="conditionSql"/>
+        <if test="currentPage != null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+</mapper>

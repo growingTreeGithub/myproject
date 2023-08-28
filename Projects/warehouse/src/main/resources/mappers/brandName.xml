@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.BrandNameDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.BrandName">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM brandName WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="BrandName">
+        INSERT INTO brandName(name) VALUES(#{name})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="BrandName">
+        UPDATE brandName SET name = #{name} WHERE id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT id, name FROM brandName WHERE id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT id, name FROM brandName
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="keyword != null">
+                AND name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM brandName <include refid="conditionSql"/>
+    </select>
+    <select id="queryByCondition" resultMap="BaseResultMap">
+        SELECT id, name FROM brandName <include refid="conditionSql"/>
+        <if test="currentPage != null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryBrandNameByProcurementRequestItemId" resultMap="BaseResultMap">
+        SELECT id, name FROM brandName where id = (SELECT brandname_id FROM product WHERE id = (SELECT product_id FROM procurementRequestItem WHERE id = #{procurementRequestItem_id}))
+    </select>
+    <select id="queryBrandNameByInBoundOrderItemId" resultMap="BaseResultMap">
+        SELECT id, name FROM brandName where id = (SELECT brandname_id FROM product WHERE id = (SELECT product_id FROM inBoundOrderItem WHERE id = #{inBoundOrderItem_id}))
+    </select>
+    <select id="queryBrandNameByOutBoundOrderItemId" resultMap="BaseResultMap">
+        SELECT id, name FROM brandName where id = (SELECT brandname_id FROM product WHERE id = (SELECT product_id FROM outBoundOrderItem WHERE id = #{outBoundOrderItem_id}))
+    </select>
+    <select id="queryBrandNameByProductId" resultMap="BaseResultMap">
+        SELECT id, name FROM brandName where id = (SELECT brandname_id FROM product WHERE id = #{productId})
+    </select>
+</mapper>

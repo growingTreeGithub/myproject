@@ -1,0 +1,240 @@
+/*set the css for list jsp of different modules*/
+
+/*css for the division area of the listForm in list.jsp*/
+.listForm{
+    /*to left some space for left and right in list.jsp*/
+    width:96%;
+    /*set both margin-top and margin-bottom to be zero, margin-left and margin-right to be auto
+    in order to set the content to display central in the div, need to define the width of the element
+    before centering the element by margin:0 auto*/
+    margin:0 auto;
+    /*set any content which is outside this div to be hidden*/
+    overflow:hidden;
+}
+
+/*css for the searchBox in list.jsp*/
+.searchBox{
+    /*set the horizontal alignment of the content to the center of the searchBox*/
+    text-align: center;
+}
+
+/*css for the searchTitle inside in the searchBox in list.jsp*/
+.searchTitle{
+    /*set the height of searchTitle to be 30px*/
+    height:30px;
+    /*set the distance between the searchTitle bar and the title bar of the warehouse management system to be 5px*/
+    margin-top:5px;
+    /*set the line height of searchTitle to be the same with the height of searchTitle
+    so that the text inside searchTitle bar could lie properly inside the searchTitle bar.*/
+    line-height:30px;
+    /*set the color of text inside searchTitle to be white*/
+    color:white;
+    /*set the background-color of the searchTitle bar*/
+    background-color: #548eff;
+    /*set the font-size of the text inside searchTitle to be 20px*/
+    font-size:20px;
+    /*set the font-family of the text inside searchTitle*/
+    font-family:"Segoe UI";
+}
+
+/*css for the area that enter criteria for searching*/
+.searchCriteria{
+    /*set the height of searchCriteria bar to be 50px*/
+    height:50px;
+    /*set the width, line style and color of the border of the searchCriteria bar*/
+    border: 1px solid #EDEDED;
+    /*As the <div> searchRegion need to take a position based on the nearest ancestor
+    which have position property in its css property, the <div> searchCriteria area need to add
+    a css property position:relative so that <div> searchRegion can use position:absolute to modify
+    its position based on <div> searchCriteria.
+    Elements with position: relative are still in flow. It can adjust its position with css property.
+    For example, top, left, right, bottom*/
+    position: relative;
+}
+
+/*css for the area that includes all the input type for searching*/
+#searchRegion{
+    /*<div> searchRegion is based on the parent element <div> searchCriteria to
+    adjust its position. Therefore, set css property position:absolute for <div> searchRegion.*/
+    position:absolute;
+    /*top property specifies the distance between the element's outer margin of top edge
+    and the inner border of the top edge of its containing block.*/
+    top:5px;
+    /*left property specifies the distance between the element's outer margin of left edge and
+    the inner border of left edge of its containing block.(The containing block is the ancestor
+    to which the element is relatively positioned)*/
+    left:10px;
+    /*set the height of searchRegion to be 30px*/
+    height:30px;
+    /*set the line height of searchRegion to be the same with the height of searchRegion
+    so that the text inside searchRegion area could lie properly inside the searchRegion area.*/
+    line-height:30px;
+    /*set the font-size of the text inside searchRegion*/
+    font-size:15px;
+    /*set the font-family of the text inside searchRegion*/
+    font-family:"Segoe UI";
+}
+
+/*css for the <div> searchButton which put searchButton in it. For example, <div>searchButton in OutboundOrder/list.jsp*/
+.searchButton{
+    /*set the height of searchButton to be 50px*/
+    height:50px;
+    /*set the width, line style and color of the border of <div> searchButton*/
+    border: 1px solid #EDEDED;
+    /*set position:relative in case that the child element inside <div> searchButton can adjust its position
+    relative to <div> searchButton*/
+    position: relative;
+}
+
+/*css for the <div> domainList to put the list title and input button*/
+#domainList{
+    /*set the height of <div> domainList to be 50px*/
+    height:50px;
+    /*set the space on top of <div> domainList to the bottom border of <div> searchBox to be 20px*/
+    margin-top:20px;
+    /*set the background-color of the <div> domainList*/
+    background-color: #548eff;
+    /*set the width, line style and color of the border of <div> domainList*/
+    border:1px solid #09099c;
+    /*As the <span> domainTitle need to take a position based on the nearest ancestor
+    which have position property in its css property, the <div> domainList area need to add
+    a css property position:relative so that <span> domainTitle can use position:absolute to modify
+    its position based on <div> domainList.
+    Elements with position: relative are still in flow. It can adjust its position with css property.
+    For example, top, left, right, bottom*/
+    position:relative;
+}
+
+/*css for the <span> domainTitle*/
+#domainTitle{
+    /*<span> domainTitle is based on the parent element <div> domainList to
+    adjust its position. Therefore, set css property position:absolute for <span> domainTitle.*/
+    position:absolute;
+    /*set the height of <span> domainTitle the same as <div> domainList*/
+    height:50px;
+    /*set the width of <span> domainTitle to be 300px*/
+    width:300px;
+    /*to set <span> domainTitle to be centered align horizontally inside <div> domainList,
+    set the following three css property, left:0; right:0; margin: 0 auto.
+    the width of relative position element = left + right + margin-left
+    + margin-right + the width of absolute position element
+    When left, right equal to 0, margin is auto, margin-left and margin-right will be divided equally.
+    Therefore, <span> domainTitle can be centered align horizontally inside <div> domainList.
+    */
+    left:0;
+    right:0;
+    margin:0 auto;
+    /*set the font-size of words inside <span> domainTitle to be 20px */
+    font-size:20px;
+    /*set the line-height and height of <span> domainTitle to be the same so that the words inside
+    <span> domainTitle can be centered align vertically inside <span> domainTitle*/
+    line-height:50px;
+    /*set the font color of words inside <span> domainTitle to be white*/
+    color:white;
+    /*set the font-family of the words inside <span> domainTitle*/
+    font-family:"Segoe UI";
+}
+
+/*css for <div> tableResult that enclose the whole table*/
+.tableResult{
+    /*set the space on top of <div> tableResult to the bottom border of <div> domainList to be 5px*/
+    margin-top: 5px;
+    /*set any content which is outside this div to be hidden*/
+    overflow:hidden;
+}
+
+/*css for the table inside <div> tableResult*/
+.table{
+    /*set the width of table relative to the width of <div> tableResult*/
+    width:100%;
+    /*set the table to be centered align horizontally inside <div> tableResult*/
+    margin:0 auto;
+}
+
+/*css for <thead> of <table>*/
+.table thead{
+    /*set the background-color of <thead>*/
+    background-color: #548eff;
+}
+
+/*css for <th> inside <thead>*/
+.table thead th{
+    /*set the height of <th> to be 35px*/
+    height:35px;
+    /*set the font-size of words inside <th> to be 17px*/
+    font-size:17px;
+    /*set the height of line box*/
+    line-height:17px;
+    /*set the font color of words inside <th> to be white*/
+    color:white;
+    /*set the width, line style and color of the border of <th>*/
+    border:1px solid #09099c;
+}
+
+/*css for <td> inside <tr> of a table*/
+.table tbody td{
+    /*set the height of <td> to be 35px*/
+    height:35px;
+    /*set the font-size of words inside <td> to be 17px*/
+    font-size: 17px;
+    /*set the height of line box*/
+    line-height:17px;
+    /*set the font-family of text inside <td>*/
+    font-family: "Segoe UI";
+    /*set the text inside <td> to be centered align horizontally*/
+    text-align: center;
+    /*set the width, line style and color of the border of <td>*/
+    border:1px solid #e9e9e9
+}
+
+/*css for the redirect button on list.jsp*/
+.button_redirect{
+    /*set float:right so that the redirect button can lie at the right side of the enclosed <div>*/
+    float:right;
+    /*set the width of redirect button to be 180px*/
+    width:180px;
+    /*set the height of redirect button to be 30px*/
+    height:30px;
+    /*set the space between the content and border of redirect button to be 5px*/
+    padding:5px;
+    /*set the space around the elements and outside the border of the element to be 5px*/
+    margin:5px;
+    /*set the height of line box*/
+    line-height:30px;
+    /*set the font-family of text inside redirect button*/
+    font-family:"Segoe UI";
+    /*show an image of a pointing hand when the mouse pointer is over an element*/
+    cursor:pointer;
+}
+
+/*css for <div id="pagination_data"> in pagination.jsp*/
+#pagination_data{
+    /*set the <div id="pagination_data"> to be left side of <div id="pagination">*/
+    float:left;
+    /*set the space on top of <div id="pagination_data"> to the bottom border of <div> tableResult to be 10px*/
+    margin-top:10px;
+    /*set the font-family of text inside <div id="pagination_data">*/
+    font-family:"Segoe UI";
+}
+
+/*css for <div id="pagination_control"> in pagination.jsp*/
+#pagination_control{
+    /*set the <div id="pagination_control"> to be right side of <div id="pagination">*/
+    float:right;
+    /*set the space on top of <div id="pagination_control"> to the bottom border of <div> tableResult to be 10px*/
+    margin-top:10px;
+    /*set the font-family of text inside <div id="pagination_control">*/
+    font-family:"Segoe UI";
+}
+
+/*css for the input box for entering currentPage Number in pagination.jsp*/
+.pageNumber_ui{
+    /*set the width of the input box for entering currentPage Number in pagination.jsp*/
+    width:50px;
+}
+
+/*css for the input box of "search by construction site name" in searchBox in outBoundOrder/list.jsp*/
+.construction_ui{
+    /*set the width of the input box to be 100px*/
+    width:100px;
+}

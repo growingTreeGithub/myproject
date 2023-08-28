@@ -1,0 +1,219 @@
+/*set the css for login.jsp of warehouse management system*/
+
+/*
+for the use of setting the position of different <div>
+div{
+    border:1px solid #000;
+}*/
+
+/*css for <div id="header"> of the login.jsp*/
+#header{
+    /*width:550px;
+    height:250px;
+    margin:0 auto;*/
+    /*set the text inside <div> to be centered align horizontally*/
+    text-align:center
+}
+
+/*css for the title of login.jsp*/
+#title{
+    /*set the line height the same as height of the <h1 id="title"> to make the text centered align vertically in <h1 id="title">*/
+    line-height:250px;
+    height:250px;
+    /*set the height of padding area on the top of <h1 id="title">*/
+    padding-top: 50px;
+    /*set the width of padding area to the left of <h1 id="title">*/
+    padding-left: 40px;
+    /*set the font family of text inside <h1 id="title">*/
+    font-family: "Segoe UI";
+    /*set the boldness of text inside <h1 id="title">*/
+    font-weight: normal;
+}
+
+/*css for the <div class="username"> that enclose input box for username*/
+.username{
+    /*set the height of <div class="username">*/
+    height:58px;
+    /*set the width of <div class="username">*/
+    width:300px;
+    /*set the margin:0 auto so that the <div class="username"> can be center align horizontally
+    inside <div class="login_row">*/
+    margin:0 auto;
+    /*testing
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius:0.375rem;*/
+    /*As the <span> username_placeholder need to take a position based on the nearest ancestor
+    which have position property in its css property, the <div> username area need to add
+    a css property position:relative so that <span> username_placeholder can use position:absolute
+    to modify its position based on <div> username.
+    Elements with position: relative are still in flow. It can adjust its position with css property.
+    For example, top, left, right, bottom*/
+    position:relative;
+}
+
+/*css for the <div class="password"> that enclose input box for password*/
+.password{
+    /*set the height of <div class="password">*/
+    height:58px;
+    /*set the width of <div class="password">*/
+    width:300px;
+    /*set the margin:0 auto so that the <div class="password"> can be center align horizontally
+    inside <div class="login_row">*/
+    margin:0 auto;
+    /*testing
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius:0.375rem;*/
+    /*As the <span> password_placeholder need to take a position based on the nearest ancestor
+    which have position property in its css property, the <div> password area need to add
+    a css property position:relative so that <span> password_placeholder can use position:absolute
+    to modify its position based on <div> password.
+    Elements with position: relative are still in flow. It can adjust its position with css property.
+    For example, top, left, right, bottom*/
+    position:relative;
+}
+
+/*css for the input box of username and password*/
+.usernamebox, .passwordbox{
+    /*set the height of input box to be 58px*/
+    height:58px;
+    /*set the width of input box to 300px*/
+    width:300px;
+    /*set the font-size of text entered inside the input box to be 15px*/
+    font-size:15px;
+    /*set the font-family of the text entered inside the input box*/
+    font-family: "Segoe UI";
+    /*set the corner of <input class="usernamebox"> and <input class="passwordbox"> by specifing the radius of the ellipse
+    defining the curvature of the corner*/
+    border-radius: 0.375rem;
+    /*set the border-color of <input class="usernamebox"> and <input class="passwordbox">*/
+    border-color: rgba(0,0,0,.5);
+    /*set transition effect on box-shadow and border-color*/
+    transition-property: box-shadow, border-color;
+    /*set the length of time a transition animation should take to complete*/
+    transition-duration: 0.15s, 0.15s;
+    /*transition-timing-function specifies the speed curve of the transition effect
+    ease-in-out specifies a transition effect with a slow start and end*/
+    transition-timing-function: ease-in-out, ease-in-out;
+    /*transition-delay specifies when the transition effect will start*/
+    transition-delay: 0s, 0s;
+}
+
+/*css for the <span class="username_placeholder">*/
+.username .username_placeholder{
+    /*<span class="username_placeholder"> is based on the parent element <div class="username"> to
+    adjust its position. Therefore, set css property position:absolute for <span class="username_placeholder">.*/
+    position:absolute;
+    /*left property specifies the distance between the element's outer margin of left edge and
+    the inner border of left edge of its containing block.(The containing block is the ancestor
+    to which the element is relatively positioned)*/
+    left:10px;
+    /*bottom property specifies the distance between the element's outer margin of bottom edge and
+    the inner border of the bottom edge of its containing block.*/
+    bottom:25px;
+    /*set the font family of text inside <span class="username_placeholder">*/
+    font-family:"Segoe UI";
+    /*set the font color of text inside <span class="username_placeholder">*/
+    color: rgba(0,0,0,.6);
+    /*transition is a shorthand property for setting the four transition properties into a single property.
+    In this case, the below set the length of time a transition animation for <span class="username_placeholder">
+    should take to complete.
+    */
+    transition:0.2s;
+}
+
+/*css for the <span class="password_placeholder">*/
+.password .password_placeholder{
+    /*<span class="password_placeholder"> is based on the parent element <div class="password"> to
+    adjust its position. Therefore, set css property position:absolute for <span class="password_placeholder">.*/
+    position:absolute;
+    /*left property specifies the distance between the element's outer margin of left edge and
+    the inner border of left edge of its containing block.(The containing block is the ancestor
+    to which the element is relatively positioned)*/
+    left:10px;
+    /*bottom property specifies the distance between the element's outer margin of bottom edge and
+   the inner border of the bottom edge of its containing block.*/
+    bottom:25px;
+    /*set the font family of text inside <span class="password_placeholder">*/
+    font-family:"Segoe UI";
+    /*set the font color of text inside <span class="password_placeholder">*/
+    color: rgba(0,0,0,.6);
+    /*transition is a shorthand property for setting the four transition properties into a single property.
+    In this case, the below set the length of time a transition animation for <span class="password_placeholder">
+    should take to complete.
+    */
+    transition:0.2s;
+}
+
+/*When a user employs a pointing device, a visible focus ring appears around the focused element*/
+ input:focus-visible{
+     /*box-shadow: offset-x | offset-y | blur-radius| spread-radius | color
+     offset-x: move the box shadow left and right. Positive offset means move the shadow right of the box.
+     offset-y: move the box shadow up and down. Positive offset means move the shadow below the box.
+     blur-radius means how blurred the shadow is. The higher the number, the more blurred it will be.
+     spread-radius describe the size of the shadow. Positive values increase the size of the shadow.
+     color: box shadows are drawn in the color specified.
+     */
+     /*rgba(168,228,255,.5) .5 means 50% not transparent*/
+    box-shadow:0 0 2px 0.375em rgba(168,228,255,.5);
+     /*set the border-radius of the input box and box shadow to be 5px*/
+    border-radius:5px;
+}
+
+ /*select the first <span> element that is placed immediately
+ after <input> elements when <input> elements is focus visible*/
+input:focus-visible + span{
+    /*opacity indicate the transparency of <span> element.1 is not transparent.
+    The lower the value, the more transparent.*/
+    opacity: 1;
+    /*scale resize an element's width and height in proportion.
+    if the value is greater than 1, it means magnify.
+    if the value is smaller than 1, it will diminish.
+    scale(0.75) makes <span> diminish in proportion.
+    translate property can transfer an element from one place to another
+    along X(horizontal) axis, Y(vertical) axis.
+    Positive value means moving right or down.Negative values means moving left or up.
+    translateY(-100%) means moving up 100% based on the <span> height.
+    translateX(-30px) means moving left 30px based on the <span> width.
+    */
+    transform:scale(0.75) translateY(-100%) translateX(-30px);
+}
+
+/*css for the <div id="button"> which enclose the <input type="button">*/
+#button{
+    /*set the height of <div id="button">*/
+    height:48px;
+    /*set the width of <div id="button">*/
+    width:300px;
+    /*set the <div id="button"> to be centered align horizontally inside <div class="button_row">*/
+    margin:0 auto;
+}
+
+/*css for the login button*/
+.login_button{
+    /*set the height of login button*/
+    height:48px;
+    /*set the width of login button*/
+    width:300px;
+    /*set the space on top of <input class="login_button"> to the bottom border of <div class="login_row"> to be 20px*/
+    margin-top:20px;
+    /*set the color of text inside the login button to be white*/
+    color:white;
+    /*set the background-color of login button*/
+    background-color: #5ba6ff;
+    /*set the font-size of text inside login button to be 15px*/
+    font-size:15px;
+    /*set the font-family of text inside login button*/
+    font-family: "Segoe UI";
+    /*set the border-radius of the four corners of the login button*/
+    border-radius:0.5rem;
+    /*set the border-color of login button*/
+    border-color: #8cb7ff;
+    /*show an image of a pointing hand when the mouse pointer is over an element*/
+    cursor:pointer;
+}
+
+/*css for login button when mouse pointer hover on login button*/
+.login_button:hover{
+    /*set the background-color of the login button when mouse pointer hover on login button*/
+    background-color: #548eff;
+}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.InBoundOrderItemDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.InBoundOrderItem">
+        <id property="id" column="id"/>
+        <result property="costPrice" column="costPrice"/>
+        <result property="amount" column="amount"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <association property="product" javaType="Product" columnPrefix="product_">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="costPrice" column="costPrice"/>
+        </association>
+        <association property="inBoundOrder" select="org.construction.wms.dao.InBoundOrderDao.selectByPrimaryKey" column="inBoundOrder_id">
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM inBoundOrderItem WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="InBoundOrderItem">
+        INSERT INTO inBoundOrderItem(costPrice, amount, totalPrice, product_id, inBoundOrder_id) VALUES(#{costPrice}, #{amount}, #{totalPrice}, #{product.id}, #{inBoundOrder.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="InBoundOrderItem">
+        UPDATE inBoundOrderItem SET costPrice = #{costPrice}, amount = #{amount}, totalPrice = #{totalPrice}, product_id = #{product.id}, inBoundOrder_id = #{inBoundOrder.id} WHERE id = #{id}
+    </update>
+    <sql id = "fieldSql">
+        b.id, b.costPrice, b.amount, b.totalPrice, p.id as product_id, i.id as inBoundOrder_id
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="fieldSql"/> FROM inBoundOrderItem b
+        LEFT JOIN product p ON p.id = b.product_id
+        LEFT JOIN inBoundOrder i ON i.id = b.inBoundOrder_id
+        WHERE b.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inBoundOrderItem b
+        LEFT JOIN product p ON p.id = b.product_id
+        LEFT JOIN inBoundOrder i ON i.id = b.inBoundOrder_id
+    </select>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM inBoundOrderItem b
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM inBoundOrderItem b
+        LEFT JOIN product p ON p.id = b.product_id
+        LEFT JOIN inBoundOrder i ON i.id = b.inBoundOrder_id
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryInBoundOrderItemByInBoundOrderId"  resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inBoundOrderItem b
+        LEFT JOIN product p ON p.id = b.product_id
+        LEFT JOIN inBoundOrder i ON i.id = b.inBoundOrder_id WHERE b.id IN
+        (SELECT items_id FROM inBoundOrder_items WHERE inBoundOrder_id = #{inBoundOrderId})
+    </select>
+    <select id="getMaxId" resultType="int">
+        SELECT MAX(id) FROM inBoundOrderItem
+    </select>
+    <delete id="deleteItemsByInBoundOrderItemId">
+        DELETE FROM inBoundOrder_items WHERE items_id = #{id}
+    </delete>
+    <delete id="deleteItemsByInBoundOrderId">
+        DELETE FROM inBoundOrderItem WHERE inBoundOrder_id = #{id}
+    </delete>
+    <select id="queryInBoundOrderItemByProductId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inBoundOrderItem b
+        JOIN product p ON p.id = b.product_id
+        JOIN inBoundOrder i ON i.id = b.inBoundOrder_id
+        WHERE b.product_id = #{productId}
+    </select>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.ProcurementRequestItemDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.ProcurementRequestItem">
+        <id property="id" column="id"/>
+        <result property="costPrice" column="costPrice"/>
+        <result property="amount" column="amount"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <association property="product" javaType="Product" columnPrefix="product_">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="costPrice" column="costPrice"/>
+        </association>
+        <association property="procurementRequest" select="org.construction.wms.dao.ProcurementRequestDao.selectByPrimaryKey" column="procurementRequest_id">
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM procurementRequestItem WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="ProcurementRequestItem">
+        INSERT INTO procurementRequestItem(costPrice, amount, totalPrice, product_id, procurementRequest_id) VALUES(#{costPrice}, #{amount}, #{totalPrice}, #{product.id}, #{procurementRequest.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="ProcurementRequestItem">
+        UPDATE procurementRequestItem SET costPrice = #{costPrice}, amount = #{amount}, totalPrice = #{totalPrice}, product_id = #{product.id}, procurementRequest_id = #{procurementRequest.id} WHERE id = #{id}
+    </update>
+    <sql id = "fieldSql">
+        i.id, i.costPrice, i.amount, i.totalPrice, p.id as product_id, r.id as procurementRequest_id
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="fieldSql"/> FROM procurementRequestItem i
+        LEFT JOIN product p ON p.id = i.product_id
+        LEFT JOIN procurementRequest r ON r.id = i.procurementRequest_id
+        WHERE i.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM procurementRequestItem i
+        LEFT JOIN product p ON p.id = i.product_id
+        LEFT JOIN procurementRequest r ON r.id = i.procurementRequest_id
+    </select>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM procurementRequestItem i
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM procurementRequestItem i
+        LEFT JOIN product p ON p.id = i.product_id
+        LEFT JOIN procurementRequest r ON r.id = i.procurementRequest_id
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryProcurementRequestItemByProcurementRequestId"  resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM procurementRequestItem i
+        LEFT JOIN product p ON p.id = i.product_id
+        LEFT JOIN procurementRequest r ON r.id = i.procurementRequest_id WHERE i.id IN
+        (SELECT items_id FROM procurementRequest_items WHERE procurementRequest_id = #{procurementRequestId})
+    </select>
+    <select id="getMaxId" resultType="int">
+        SELECT MAX(id) FROM procurementRequestItem
+    </select>
+    <delete id="deleteItemsByProcurementRequestItemId">
+        DELETE FROM procurementRequest_items WHERE items_id = #{id}
+    </delete>
+    <delete id="deleteItemsByProcurementRequestId">
+        DELETE FROM procurementRequestItem WHERE procurementRequest_id = #{id}
+    </delete>
+    <select id="queryProcurementRequestItemByProductId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM procurementRequestItem i
+        JOIN product p ON p.id = i.product_id
+        JOIN procurementRequest r ON r.id = i.procurementRequest_id
+        WHERE i.product_id = #{productId}
+    </select>
+</mapper>

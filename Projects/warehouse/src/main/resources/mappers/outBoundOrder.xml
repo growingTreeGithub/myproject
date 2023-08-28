@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.OutBoundOrderDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.OutBoundOrder">
+        <id property="id" column="id"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <result property="outBoundDate" column="outBoundDate"/>
+        <result property="status" column="status"/>
+        <result property="totalAmount" column="totalAmount"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <result property="auditDate" column="auditDate"/>
+        <association property="constructionSite" select="org.construction.wms.dao.ConstructionSiteDao.selectByPrimaryKey" column="constructionSite_id">
+        </association>
+        <association property="inputUser" select="org.construction.wms.dao.EmployeeDao.selectByPrimaryKey" column="inputUser_id">
+        </association>
+        <association property="auditor" select="org.construction.wms.dao.EmployeeDao.selectByPrimaryKey" column="auditor_id">
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM outBoundOrder WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="OutBoundOrder">
+        INSERT INTO outBoundOrder(serialNumber, outBoundDate, status, totalAmount, totalPrice, auditDate, constructionSite_id, inputUser_id, auditor_id)
+        VALUES(#{serialNumber}, #{outBoundDate}, #{status}, #{totalAmount}, #{totalPrice}, #{auditDate}, #{constructionSite.id}, #{inputUser.id}, #{auditor.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="OutBoundOrder">
+        UPDATE outBoundOrder SET serialNumber = #{serialNumber}, outBoundDate = #{outBoundDate}, status = #{status}, totalAmount = #{totalAmount},
+        totalPrice = #{totalPrice}, auditDate = #{auditDate}, constructionSite_id = #{constructionSite.id},
+        inputUser_id = #{inputUser.id}, auditor_id = #{auditor.id}
+        WHERE id = #{id}
+    </update>
+    <sql id = "fieldSql">
+        o.id, o.serialNumber, o.outBoundDate, o.status, o.totalAmount, o.totalPrice, o.auditDate,
+        e.id as inputUser_id, a.id as auditor_id, c.id as constructionSite_id
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="fieldSql"/>
+        FROM outBoundOrder o
+        LEFT JOIN employee e ON e.id = o.inputUser_id
+        LEFT JOIN employee a ON a.id = o.auditor_id
+        LEFT JOIN constructionSite c ON c.id = o.constructionSite_id
+        WHERE o.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM outBoundOrder o
+        LEFT JOIN employee e ON e.id = o.inputUser_id
+        LEFT JOIN employee a ON a.id = o.auditor_id
+        LEFT JOIN constructionSite c ON c.id = o.constructionSite_id
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="startDate!= null">
+                AND o.outBoundDate &gt;= #{startDate}
+            </if>
+            <if test="endDate!= null">
+                AND o.outBoundDate &lt;= #{endDate}
+            </if>
+            <if test="keyword!= null">
+                AND c.name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM outBoundOrder o
+        LEFT JOIN employee e ON e.id = o.inputUser_id
+        LEFT JOIN employee a ON a.id = o.auditor_id
+        LEFT JOIN constructionSite c ON c.id = o.constructionSite_id
+        <include refid="conditionSql"/>
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM outBoundOrder o
+        LEFT JOIN employee e ON e.id = o.inputUser_id
+        LEFT JOIN employee a ON a.id = o.auditor_id
+        LEFT JOIN constructionSite c ON c.id = o.constructionSite_id
+        <include refid = "conditionSql"/>
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <insert id="handlerRelation">
+        INSERT INTO outBoundOrder_items(outBoundOrder_id, items_id) VALUES(#{outBoundOrderId}, #{itemsId})
+    </insert>
+    <delete id="deleteItemsByOutBoundOrderId">
+        DELETE FROM outBoundOrder_items WHERE outBoundOrder_id = #{id}
+    </delete>
+    <select id="getMaxId" resultType="int">
+        SELECT MAX(id) FROM outBoundOrder
+    </select>
+    <select id="queryOutBoundOrderByOutBoundOrderItemId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM outBoundOrder o
+        LEFT JOIN employee e ON e.id = o.inputUser_id
+        LEFT JOIN employee a ON a.id = o.auditor_id
+        LEFT JOIN constructionSite c ON c.id = o.constructionSite_id
+        where o.id = (SELECT outBoundOrder_id FROM outBoundOrder_items WHERE items_id = #{itemsId})
+    </select>
+    <select id="queryOutBoundOrderByConstructionSiteId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM outBoundOrder o
+        JOIN employee e ON e.id = o.inputUser_id
+        LEFT JOIN employee a ON a.id = o.auditor_id
+        JOIN constructionSite c ON c.id = o.constructionSite_id
+        WHERE o.constructionSite_id = #{constructionSiteId}
+    </select>
+</mapper>

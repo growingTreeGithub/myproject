@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.PermissionDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.Permission">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="expression" column="expression"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM permission WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Permission">
+        INSERT INTO permission(name, expression) VALUES(#{name}, #{expression})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Permission">
+        UPDATE permission SET name = #{name}, expression = #{expression} WHERE id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT id, name, expression FROM permission WHERE id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT id, name, expression FROM permission
+    </select>
+    <select id="queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM permission
+    </select>
+    <select id="queryByCondition" resultMap="BaseResultMap">
+        SELECT id, name, expression FROM permission
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryPermissionByRoleId"  resultMap="BaseResultMap">
+        SELECT id, name FROM permission WHERE id IN (SELECT permission_id FROM role_permission WHERE role_id = #{roleId})
+    </select>
+    <select id="queryByExpression" resultMap="BaseResultMap">
+        SELECT id, name, expression FROM permission WHERE expression = #{expression}
+    </select>
+    <select id="queryPermissionByEmployeeId" resultMap="BaseResultMap">
+        SELECT id, name, expression FROM permission WHERE id IN
+        (SELECT permission_id FROM role_permission WHERE role_id IN (SELECT role_id FROM employee_role WHERE employee_id = #{employeeId}))
+    </select>
+</mapper>

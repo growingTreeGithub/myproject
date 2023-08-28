@@ -1,0 +1,365 @@
+/*set the css for main.jsp of warehouse management system*/
+
+/*
+for the use of setting the position of different <div>
+div{
+    border: 1px solid black;
+}*/
+
+/*css for <div id="header"> of the main.jsp*/
+#header{
+    /*set the height of <div id="header">*/
+    height:50px;
+    /*set the background-color of <div id="header">*/
+    background-color: #5ba6ff;
+    /*box-shadow: offset-x | offset-y | blur-radius| spread-radius | color
+     offset-x: move the box shadow left and right. Positive offset means move the shadow right of the box.
+     offset-y: move the box shadow up and down. Positive offset means move the shadow below the box.
+     blur-radius means how blurred the shadow is. The higher the number, the more blurred it will be.
+     spread-radius describe the size of the shadow. Positive values increase the size of the shadow.
+     color: box shadows are drawn in the color specified.
+     */
+    /*rgba(0,0,0,.5) .5 means 50% not transparent*/
+    box-shadow:0 0 2px rgba(0,0,0,.5) ;
+    /*As the <h1 id="title"> need to take a position based on the nearest ancestor
+    which have position property in its css property, the <div> header area need to add
+    a css property position:relative so that <h1 id="title"> can use position:absolute
+    to modify its position based on <div> username.
+    */
+    position:relative;
+}
+
+/*css for the title of main.jsp*/
+#title{
+    /*set the width of title to be 450px*/
+    width:450px;
+    /*<h1 id="title"> is based on the parent element <div id="header"> to
+    adjust its position. Therefore, set css property position:absolute for <h1 id="title">.*/
+    position:absolute;
+    /*top property specifies the distance between the element's outer margin of top edge
+    and the inner border of the top edge of its containing block.*/
+    top:10px;
+    /*to set <h1 id="title"> to be centered align horizontally inside <div id="header">,
+    set the following three css property, left:0; right:0; margin: 0 auto.
+    the width of relative position element = left + right + margin-left
+    + margin-right + the width of absolute position element
+    When left, right equal to 0, margin is auto, margin-left and margin-right will be divided equally.
+    Therefore, <span> domainTitle can be centered align horizontally inside <div> domainList.
+    */
+    left:0;
+    right:0;
+    margin:0 auto;
+    /*set the font color of the title to be white*/
+    color:white;
+    /*set the font-size of title to be 25px*/
+    font-size:25px;
+    /*set the height of line box*/
+    line-height:25px;
+    /*set the font family of text inside <h1 id="title">*/
+    font-family:"Segoe UI";
+    /*set the boldness of text inside <h1 id="title">*/
+    font-weight:normal;
+}
+
+/*css for the logout button on main.jsp*/
+#header .button_logout{
+    /*set the width of logout button*/
+    width:80px;
+    /*set the height of logout button*/
+    height:25px;
+    /*set the logout button to be located at the right side of the <div id="header">*/
+    float:right;
+    /*set the space on top of logout button to the top border of <div id="header"> to be 10px*/
+    margin-top:10px;
+    /*set the space on the right of logout button to the right border of <div id="header"> to be 10px*/
+    margin-right:10px;
+    /*set the color of text inside logout button*/
+    color: #5ba6ff;
+    /*set the background-color of the logout button to be white*/
+    background-color:white;
+    /*set the border-radius of the logout button*/
+    border-radius:0.375rem;
+    /*box-shadow: offset-x | offset-y | blur-radius| spread-radius | color
+     offset-x: move the box shadow left and right. Positive offset means move the shadow right of the box.
+     offset-y: move the box shadow up and down. Positive offset means move the shadow below the box.
+     blur-radius means how blurred the shadow is. The higher the number, the more blurred it will be.
+     spread-radius describe the size of the shadow. Positive values increase the size of the shadow.
+     color: box shadows are drawn in the color specified.
+     */
+    /*rgba(168,228,255,.5) .5 means 50% not transparent*/
+    box-shadow: 0 0 2px 0.15em rgba(168, 228, 255, 0.5);
+    /*set the font family of text inside logout button*/
+    font-family:"Segoe UI";
+    /*set the boldness of text inside logout button*/
+    font-weight:normal;
+    /*show an image of a pointing hand when the mouse pointer is over an element*/
+    cursor:pointer;
+    /*set the text inside logout button to be centered align horizontally*/
+    text-align:center;
+}
+
+/*set the left menu bar on main.jsp*/
+#main #left{
+    /*since <div id="left"> is a block element, it will consume all the space in one row.
+    To make the <div id="left"> to be inline with other elements in one row.Set the <div>
+    to be float:left so that <div id="left"> can be out of normal flow and can be inline
+    with other element in the same row.In this case, left menu bar can be inline with the
+    right region showing different modules list information.
+    */
+    float:left;
+    /*The left menu bar consumes 25% of the whole width of the display window.*/
+    width:25%;
+    /*The left menu bar consumes 100% of the height of the display window.*/
+    height:100%;
+    /*set the background color of the menu bar*/
+    background-color:#F1F1F1;
+    /*box-shadow: offset-x | offset-y | blur-radius| spread-radius | color
+     offset-x: move the box shadow left and right. Positive offset means move the shadow right of the box.
+     offset-y: move the box shadow up and down. Positive offset means move the shadow below the box.
+     blur-radius means how blurred the shadow is. The higher the number, the more blurred it will be.
+     spread-radius describe the size of the shadow. Positive values increase the size of the shadow.
+     color: box shadows are drawn in the color specified.
+     */
+    /*rgba(0,0,0,.5) .5 means 50% not transparent*/
+    box-shadow: 0 0 2px rgba(0,0,0,.5);
+}
+
+/*css for the list item of stock management on the left menu bar*/
+#stockListItem{
+    /*set the space on top of stock management list item to the bottom of list item
+    above the stock management list item to be 20px*/
+    margin-top:20px;
+}
+
+/*css for the list item of permission management on the left menu bar*/
+#permissionListItem{
+    /*set the space on top of permission management list item to the bottom of list item
+    above the permission management list item to be 20px*/
+    margin-top:20px;
+}
+
+
+/*.section{
+    font-size:20px;
+    line-height:20px;
+    padding-top:20px;
+    padding-bottom: 20px;
+    padding-left:20px;
+    font-family:Arial;
+    font-weight:normal;
+    cursor:pointer;
+}*/
+
+/*css for the right region showing different modules information*/
+#right{
+    /*since <div id="right"> is a block element, it will consume all the space in one row.
+    To make the <div id="right"> to be inline with other elements in one row. Set the <div>
+    to be float:right so that <div id="right"> can be out of normal flow and can be inline
+    with other element in the same row. In this case, right menu bar can be inline with the
+    left menu bar.
+    */
+    float:right;
+    /*The right region consumes 75% of the whole width of the display window.*/
+    width:75%;
+}
+
+/*css for the main title bar of basic warehouse info module on left menu bar*/
+.basic_main_title{
+    /*set the space between the left of the main title bar to the left border
+    of left menu bar to be 20px*/
+    margin-left:20px;
+    /*set the height of padding area on the top of main title bar*/
+    padding-top:10px;
+    /*set the width of padding area to the bottom of main title bar*/
+    padding-bottom:10px;
+    /*set the height of main title bar*/
+    height:20px;
+    /*set the color of text inside main title bar*/
+    color:#000;
+    /*set the font-size of text inside main title bar to be 20px*/
+    font-size:20px;
+    /*set the font-family of text inside main title bar*/
+    font-family:"Segoe UI";
+}
+
+/*css for the main title bar of permission management module on left menu bar*/
+.permission_main_title{
+    /*set the space between the left of the main title bar to the left border
+    of left menu bar to be 20px*/
+    margin-left:20px;
+    /*set the height of padding area on the top of main title bar*/
+    padding-top:10px;
+    /*set the width of padding area to the bottom of main title bar*/
+    padding-bottom:10px;
+    /*set the height of main title bar*/
+    height:20px;
+    /*set the color of text inside main title bar*/
+    color:#000;
+    /*set the font-size of text inside main title bar to be 20px*/
+    font-size:20px;
+    /*set the font-family of text inside main title bar*/
+    font-family:"Segoe UI";
+}
+
+/*css for the main title bar of stock management module on left menu bar*/
+.stock_main_title{
+    /*set the space between the left of the main title bar to the left border
+    of left menu bar to be 20px*/
+    margin-left:20px;
+    /*set the height of padding area on the top of main title bar*/
+    padding-top:10px;
+    /*set the width of padding area to the bottom of main title bar*/
+    padding-bottom:10px;
+    /*set the height of main title bar*/
+    height:20px;
+    /*set the color of text inside main title bar*/
+    color:#000;
+    /*set the font-size of text inside main title bar to be 20px*/
+    font-size:20px;
+    /*set the font-family of text inside main title bar*/
+    font-family:"Segoe UI";
+}
+
+/*css for the arrow on the right of basic warehouse info module title*/
+.basic_arrow{
+    /*set the arrow to be inline-block*/
+    display:inline-block;
+    /*set the height of the arrow the same as the height of the background image(chevron-down.svg)*/
+    height:16px;
+    /*set the width of the arrow the same as the width of the background image(chevron-down.svg)*/
+    width:16px;
+    /*set the space between the top of the arrow and the top border of the list item*/
+    margin-top:5px;
+    /*set the space between the left of the arrow and the right border of <a class="basic_main_title"> to be 10px*/
+    margin-left:10px;
+    /*set the background image to display arrow*/
+    background-image:url("/asset/images/chevron-down.svg");
+    /*set the background-image to display center in <img> tag*/
+    background-position:center;
+    /*set the background-image not to repeat showing inside <img> tag*/
+    background-repeat:no-repeat;
+    /*set the transition time for the arrow to flip upside down to be 0.3s*/
+    transition:.3s;
+}
+
+/*css for the arrow on the right of permission management module title*/
+.permission_arrow{
+    /*set the arrow to be inline-block*/
+    display:inline-block;
+    /*set the height of the arrow the same as the height of the background image(chevron-down.svg)*/
+    height:16px;
+    /*set the width of the arrow the same as the width of the background image(chevron-down.svg)*/
+    width:16px;
+    /*set the space between the top of the arrow and the top border of the list item*/
+    margin-top:5px;
+    /*set the space between the left of the arrow and the right border of <a class="permission_main_title"> to be 10px*/
+    margin-left:10px;
+    /*set the background image to display arrow*/
+    background-image:url("/asset/images/chevron-down.svg");
+    /*set the background-image to display center in <img> tag*/
+    background-position:center;
+    /*set the background-image not to repeat showing inside <img> tag*/
+    background-repeat:no-repeat;
+    /*set the transition time for the arrow to flip upside down to be 0.3s*/
+    transition:.3s;
+}
+
+/*css for the arrow on the right of stock management module title*/
+.stock_arrow{
+    /*set the arrow to be inline-block*/
+    display:inline-block;
+    /*set the height of the arrow the same as the height of the background image(chevron-down.svg)*/
+    height:16px;
+    /*set the width of the arrow the same as the width of the background image(chevron-down.svg)*/
+    width:16px;
+    /*set the space between the top of the arrow and the top border of the list item*/
+    margin-top:5px;
+    /*set the space between the left of the arrow and the right border of <a class="stock_main_title"> to be 10px*/
+    margin-left:10px;
+    /*set the background image to display arrow*/
+    background-image:url("/asset/images/chevron-down.svg");
+    /*set the background-image to display center in <img> tag*/
+    background-position:center;
+    /*set the background-image not to repeat showing inside <img> tag*/
+    background-repeat:no-repeat;
+    /*set the transition time for the arrow to flip upside down to be 0.3s*/
+    transition:.3s;
+}
+
+/*css toggle on arrow sign to rotate 180 degree upside down when clicking
+  the main title of basic warehouse info, stock management, permission management.
+  (Please refer to mainpage.js).This css property will be added to arrow signs and
+  will be remove when clicking the main title again so as to have a rotation animation.
+*/
+.flip{
+    transform:rotate(180deg);
+}
+
+/*css for the sub titles under the main title of basic warehouse info module*/
+.basic_sub_title{
+    /*set the sub titles not to display until clicking the main title to display*/
+    display:none;
+    /*set the space between the left of the sub title and the left border of left menu bar to be 30px*/
+    margin-left:30px;
+    /*set the space between the content in sub title and top border of the sub title to be 10px*/
+    padding-top:10px;
+    /*set the space between the content in sub title and bottom border of the sub title to be 10px*/
+    padding-bottom:10px;
+    /*set the height of sub title to be 20px*/
+    height:20px;
+    /*set the color of text of sub title*/
+    color:#000;
+    /*set the font size of text inside sub title to be 20px*/
+    font-size:20px;
+    /*set the font-family of text inside sub title*/
+    font-family:"Segoe UI";
+}
+
+/*css for the sub titles under the main title of permission management module*/
+.permission_sub_title{
+    /*set the sub titles not to display until clicking the main title to display*/
+    display:none;
+    /*set the space between the left of the sub title and the left border of left menu bar to be 30px*/
+    margin-left:30px;
+    /*set the space between the content in sub title and top border of the sub title to be 10px*/
+    padding-top:10px;
+    /*set the space between the content in sub title and bottom border of the sub title to be 10px*/
+    padding-bottom:10px;
+    /*set the height of sub title to be 20px*/
+    height:20px;
+    /*set the color of text of sub title*/
+    color:#000;
+    /*set the font size of text inside sub title to be 20px*/
+    font-size:20px;
+    /*set the font-family of text inside sub title*/
+    font-family:"Segoe UI";
+}
+
+/*css for the sub titles under the main title of stock management module*/
+.stock_sub_title{
+    /*set the sub titles not to display until clicking the main title to display*/
+    display:none;
+    /*set the space between the left of the sub title and the left border of left menu bar to be 30px*/
+    margin-left:30px;
+    /*set the space between the content in sub title and top border of the sub title to be 10px*/
+    padding-top:10px;
+    /*set the space between the content in sub title and bottom border of the sub title to be 10px*/
+    padding-bottom:10px;
+    /*set the height of sub title to be 20px*/
+    height:20px;
+    /*set the color of text of sub title*/
+    color:#000;
+    /*set the font size of text inside sub title to be 20px*/
+    font-size:20px;
+    /*set the font-family of text inside sub title*/
+    font-family:"Segoe UI";
+}
+
+/*css toggle on sub titles to become block elements when clicking
+  the main title of basic warehouse info, stock management, permission management
+  so that the sub titles can appear under the main title.
+  (Please refer to mainpage.js)
+*/
+.hide{
+    display:block;
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.ProductDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="costPrice" column="costPrice"/>
+        <association property="brandName" javaType="BrandName" columnPrefix="brandName_">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM product WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Product">
+        INSERT INTO product(name, costPrice, brandName_id) VALUES(#{name}, #{costPrice}, #{brandName.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Product">
+        UPDATE product SET name = #{name}, costPrice = #{costPrice}, brandName_id = #{brandName.id} WHERE id = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT p.id, p.name, p.costPrice, b.id as brandName_id, b.name as brandName_name FROM product p LEFT JOIN brandName b ON b.id = p.brandName_id WHERE p.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT p.id, p.name, p.costPrice, b.id as brandName_id, b.name as brandName_name FROM product p LEFT JOIN brandName b ON b.id = p.brandName_id
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="keyword!= null">
+                AND p.name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM product p <include refid="conditionSql"/>
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT p.id, p.name, p.costPrice, b.id as brandName_id, b.name as brandName_name
+        FROM product p LEFT JOIN brandName b ON b.id = p.brandName_id
+        <include refid = "conditionSql"/>
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryProductByBrandNameId" resultMap="BaseResultMap">
+        SELECT p.id, p.name, p.costPrice, b.id as brandName_id, b.name as brandName_name FROM product p
+        JOIN brandName b ON b.id = p.brandName_id
+        WHERE p.brandName_id = #{brandNameId}
+    </select>
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.EmployeeDao">
+   <resultMap id="BaseResultMap" type="org.construction.wms.domain.Employee">
+       <id property="id" column="id"/>
+       <result property="name" column="name"/>
+       <result property="password" column="password"/>
+       <result property="age" column="age"/>
+       <result property="admin" column="admin"/>
+       <result property="status" column="status"/>
+       <association property="dept" javaType="Department" columnPrefix="dept_">
+           <id property="id" column="id"/>
+           <result property="name" column="name"/>
+       </association>
+       <collection property="roles" ofType="org.construction.wms.domain.Role">
+           <id property="id" column="role_id"/>
+           <result property="name" column="role_name"/>
+       </collection>
+   </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM employee WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Employee">
+        INSERT INTO employee(name, password, age, admin, dept_id) VALUES(#{name}, #{password}, #{age}, #{admin}, #{dept.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Employee">
+        UPDATE employee SET name = #{name}, age = #{age}, admin = #{admin}, dept_id = #{dept.id} WHERE id = #{id}
+    </update>
+    <sql id = "fieldSql">
+        e.id, e.name, e.password, e.age, e.admin, e.status, d.id as dept_id, d.name as dept_name
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="fieldSql"/> FROM employee e LEFT JOIN department d ON d.id = e.dept_id WHERE e.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM employee e LEFT JOIN department d ON d.id = e.dept_id
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="keyword!= null">
+               AND e.name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM employee e <include refid="conditionSql"/>
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM employee e LEFT JOIN department d ON d.id = e.dept_id
+        <include refid = "conditionSql"/>
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryByLogin" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM employee e LEFT JOIN department d ON d.id = e.dept_id
+        WHERE e.name = #{name} and e.password = #{password}
+    </select>
+    <insert id="handlerRelation">
+        INSERT INTO employee_role(employee_id, role_id) VALUES(#{eid}, #{rid})
+    </insert>
+    <delete id="deleteRoleByEmployeeId">
+        DELETE FROM employee_role WHERE employee_id = #{id}
+    </delete>
+    <select id="getMaxId" resultType="int">
+        SELECT MAX(id) FROM employee
+    </select>
+    <update id="updateState">
+        UPDATE employee SET status = 1 where id = #{id}
+    </update>
+    <select id="queryEmployeeByDeptId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM employee e JOIN department d ON d.id = e.dept_id WHERE e.dept_id = #{deptId}
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.SupplierDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.Supplier">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <result property="phone" column="phone"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM supplier WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Supplier">
+        INSERT INTO supplier(name, address, phone) VALUES(#{name}, #{address}, #{phone})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Supplier">
+        UPDATE supplier SET name = #{name}, address = #{address}, phone = #{phone} WHERE id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT id, name, address, phone FROM supplier WHERE id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT id, name, address, phone FROM supplier
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="keyword != null">
+                AND name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM supplier <include refid="conditionSql"/>
+    </select>
+    <select id="queryByCondition" resultMap="BaseResultMap">
+        SELECT id, name, address, phone FROM supplier <include refid="conditionSql"/>
+        <if test="currentPage != null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+</mapper>

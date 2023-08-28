@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd  http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        <!--scan annotation-->
+        <!--<context:component-scan base-package="org.construction.wms"/>-->
+        <!--to import external file-->
+        <context:property-placeholder location="classpath:main.properties"/>
+
+        <!--dataSource using Druid connection pool-->
+        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+                <property name="driverClassName" value="${jdbc.driverClassName}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+        </bean>
+        <!--create SqlSessionFactory-->
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+                <!--dataSource-->
+                <property name="dataSource" ref="dataSource"/>
+                <!--to set up aliases for classes in domain package-->
+                <property name="typeAliasesPackage" value="${mybatis.typeAliasesPackage}"/>
+                <!--mapper files location-->
+                <property name="mapperLocations" value="${mybatis.mapperLocations}"/>
+        </bean>
+        <!--to scan DAO-->
+        <!--this class is provided by MyBatis to enable scanning and auto-configuration of mapper interfaces-->
+        <!--this configuration can create an instance of sqlSessionFactory using database configuration
+        and then obtain a sqlSession object from sqlSessionFactory. Then use the session.getMapper(dao.class)
+         method to create a proxy object for DAO interface.-->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+                <!--to set SqlSessionFactoryBean id-->
+                <!--this property specifies the name of the sqlSessionFactory bean that is used for database
+                connection and session management.-->
+                <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+                <!--to the location of dao package-->
+                <!--this property indicates Mybatis should scan this package for mapper interfaces.-->
+                <property name="basePackage" value="org.construction.wms.dao"/>
+        </bean>
+
+        <!--Configure TransactionManager-->
+        <bean id="txMgr" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                <property name="dataSource" ref="dataSource"/>
+        </bean>
+
+        <!--transaction management-->
+        <!--this indicates at which method to do transaction advice-->
+        <tx:advice id="txAdvice" transaction-manager="txMgr">
+                <tx:attributes>
+                        <tx:method name="*"/>
+                        <!--read-only="true" indicates it is a read-only transaction which performance will be faster-->
+                        <tx:method name="list*" read-only="true"/>
+                        <tx:method name="get*" read-only="true"/>
+                        <tx:method name="query*" read-only="true"/>
+                        <tx:method name="select*" read-only="true"/>
+                </tx:attributes>
+        </tx:advice>
+
+        <!--aop-->
+        <aop:config>
+                <!--this indicates at which package to use the aop to do advice-->
+                <aop:pointcut id="pc" expression="within(org.construction.wms.service..*)"/>
+                <!--aop:pointcut and tx:advice combines to tell at which package's method to use aop to do advice-->
+                <aop:advisor advice-ref="txAdvice" pointcut-ref="pc"/>
+        </aop:config>
+
+        <!--Date Converter-->
+        <!--spring framework will use id="conversionService" using applicationContext.getBean() method to get the ConversionService object.
+            Then, use conversionService object to get DateConverter and use convert method which internally use the DateConverter
+            to convert the string to Date object.-->
+        <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+                <property name="converters">
+                        <!--it can set more than one DateConverter-->
+                        <set>
+                                <!--a custom converter for handling date conversions-->
+                                <bean class="org.construction.wms.converter.DateConverter"/>
+                        </set>
+                </property>
+        </bean>
+</beans>

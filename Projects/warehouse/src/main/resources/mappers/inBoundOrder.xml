@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.InBoundOrderDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.InBoundOrder">
+        <id property="id" column="id"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <result property="inBoundDate" column="inBoundDate"/>
+        <result property="status" column="status"/>
+        <result property="totalAmount" column="totalAmount"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <result property="auditDate" column="auditDate"/>
+        <association property="inputUser" select="org.construction.wms.dao.EmployeeDao.selectByPrimaryKey" column="inputUser_id">
+        </association>
+        <association property="auditor" select="org.construction.wms.dao.EmployeeDao.selectByPrimaryKey" column="auditor_id">
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM inBoundOrder WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="InBoundOrder">
+        INSERT INTO inBoundOrder(serialNumber, inBoundDate, status, totalAmount, totalPrice, auditDate, inputUser_id, auditor_id)
+        VALUES(#{serialNumber}, #{inBoundDate}, #{status}, #{totalAmount}, #{totalPrice}, #{auditDate}, #{inputUser.id}, #{auditor.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="InBoundOrder">
+        UPDATE inBoundOrder SET serialNumber = #{serialNumber}, inBoundDate = #{inBoundDate}, status = #{status}, totalAmount = #{totalAmount},
+        totalPrice = #{totalPrice}, auditDate = #{auditDate},
+        inputUser_id = #{inputUser.id}, auditor_id = #{auditor.id}
+        WHERE id = #{id}
+    </update>
+    <sql id = "fieldSql">
+        i.id, i.serialNumber, i.inBoundDate, i.status, i.totalAmount, i.totalPrice, i.auditDate,
+        e.id as inputUser_id, a.id as auditor_id
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="fieldSql"/>
+        FROM inBoundOrder i
+        LEFT JOIN employee e ON e.id = i.inputUser_id
+        LEFT JOIN employee a ON a.id = i.auditor_id
+        WHERE i.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inBoundOrder i
+        LEFT JOIN employee e ON e.id = i.inputUser_id
+        LEFT JOIN employee a ON a.id = i.auditor_id
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="startDate!= null">
+                AND i.inBoundDate &gt;= #{startDate}
+            </if>
+            <if test="endDate!= null">
+                AND i.inBoundDate &lt;= #{endDate}
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM inBoundOrder i
+        LEFT JOIN employee e ON e.id = i.inputUser_id
+        LEFT JOIN employee a ON a.id = i.auditor_id
+        <include refid="conditionSql"/>
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM inBoundOrder i
+        LEFT JOIN employee e ON e.id = i.inputUser_id
+        LEFT JOIN employee a ON a.id = i.auditor_id
+        <include refid = "conditionSql"/>
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <insert id="handlerRelation">
+        INSERT INTO inBoundOrder_items(inBoundOrder_id, items_id) VALUES(#{inBoundOrderId}, #{itemsId})
+    </insert>
+    <delete id="deleteItemsByInBoundOrderId">
+        DELETE FROM inBoundOrder_items WHERE inBoundOrder_id = #{id}
+    </delete>
+    <select id="getMaxId" resultType="int">
+        SELECT MAX(id) FROM inBoundOrder
+    </select>
+    <select id="queryInBoundOrderByInBoundOrderItemId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inBoundOrder i
+        LEFT JOIN employee e ON e.id = i.inputUser_id
+        LEFT JOIN employee a ON a.id = i.auditor_id
+        where i.id = (SELECT inBoundOrder_id FROM inBoundOrder_items WHERE items_id = #{itemsId})
+    </select>
+</mapper>

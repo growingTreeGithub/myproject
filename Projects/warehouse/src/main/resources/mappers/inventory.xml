@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.InventoryDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.Inventory">
+        <id property="id" column="id"/>
+        <result property="inventoryAmount" column="inventoryAmount"/>
+        <result property="averagePrice" column="averagePrice"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <association property="product" javaType="Product" columnPrefix="product_">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="costPrice" column="costPrice"/>
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM inventory WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Inventory">
+        INSERT INTO inventory(inventoryAmount, averagePrice, totalPrice, product_id) VALUES(#{inventoryAmount}, #{averagePrice}, #{totalPrice}, #{product.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Employee">
+        UPDATE inventory SET inventoryAmount = #{inventoryAmount}, averagePrice = #{averagePrice}, totalPrice = #{totalPrice}, product_id = #{product.id} WHERE id = #{id}
+    </update>
+    <sql id = "fieldSql">
+        i.id, i.inventoryAmount, i.averagePrice, i.totalPrice, p.id as product_id, p.name as product_name
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="fieldSql"/> FROM inventory i LEFT JOIN product p ON p.id = i.product_id WHERE i.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inventory i LEFT JOIN product p ON p.id = i.product_id
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="keyword!= null">
+                AND p.name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM inventory i LEFT JOIN product p ON p.id = i.product_id
+        <include refid="conditionSql"/>
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM inventory i LEFT JOIN product p ON p.id = i.product_id
+        <include refid = "conditionSql"/>
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryByProductId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inventory i LEFT JOIN product p ON p.id = i.product_id WHERE p.id = #{productId}
+    </select>
+    <select id="queryInventoryByProductId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM inventory i JOIN product p ON p.id = i.product_id WHERE i.product_id = #{productId}
+    </select>
+</mapper>

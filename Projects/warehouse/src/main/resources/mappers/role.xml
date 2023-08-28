@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.RoleDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM role WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Role">
+        INSERT INTO role(name) VALUES(#{name})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Role">
+        UPDATE role SET name = #{name} WHERE id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT id, name FROM role WHERE id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT id, name FROM role
+    </select>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM role
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT id, name
+        FROM role
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <insert id="handlerRelation">
+        INSERT INTO role_permission(role_id, permission_id) VALUES(#{rid}, #{pid})
+    </insert>
+    <delete id="deletePermissionByRoleId">
+        DELETE FROM role_permission where role_id = #{id}
+    </delete>
+    <select id="getMaxId" resultType="int">
+        SELECT MAX(id) FROM role
+    </select>
+    <select id="queryRoleByEmployeeId" resultMap="BaseResultMap">
+        SELECT id, name FROM role WHERE id IN (SELECT role_id FROM employee_role WHERE employee_id = #{employee_id})
+    </select>
+</mapper>

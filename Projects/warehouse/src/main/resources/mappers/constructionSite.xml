@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.ConstructionSiteDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.ConstructionSite">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM constructionSite WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="ConstructionSite">
+        INSERT INTO constructionSite(name, address) VALUES(#{name}, #{address})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="ConstructionSite">
+        UPDATE constructionSite SET name = #{name}, address = #{address} WHERE id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT id, name, address FROM constructionSite WHERE id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT id, name, address FROM constructionSite
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="keyword != null">
+                AND name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM constructionSite <include refid="conditionSql"/>
+    </select>
+    <select id="queryByCondition" resultMap="BaseResultMap">
+        SELECT id, name, address FROM constructionSite <include refid="conditionSql"/>
+        <if test="currentPage != null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+</mapper>

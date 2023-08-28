@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.construction.wms.dao.ProcurementRequestDao">
+    <resultMap id="BaseResultMap" type="org.construction.wms.domain.ProcurementRequest">
+        <id property="id" column="id"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <result property="status" column="status"/>
+        <result property="totalAmount" column="totalAmount"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <result property="inputDate" column="inputDate"/>
+        <result property="finishDate" column="finishDate"/>
+        <association property="supplier" select="org.construction.wms.dao.SupplierDao.selectByPrimaryKey" column="supplier_id">
+        </association>
+        <association property="inputUser" select="org.construction.wms.dao.EmployeeDao.selectByPrimaryKey" column="inputUser_id">
+        </association>
+        <association property="merchandiser" select="org.construction.wms.dao.EmployeeDao.selectByPrimaryKey" column="merchandiser_id">
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM procurementRequest WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="ProcurementRequest">
+        INSERT INTO procurementRequest(serialNumber, status, totalAmount, totalPrice, inputDate, finishDate, supplier_id, inputUser_id, merchandiser_id)
+        VALUES(#{serialNumber}, #{status}, #{totalAmount}, #{totalPrice}, #{inputDate}, #{finishDate}, #{supplier.id}, #{inputUser.id}, #{merchandiser.id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="ProcurementRequest">
+        UPDATE procurementRequest SET serialNumber = #{serialNumber}, status = #{status}, totalAmount = #{totalAmount},
+        totalPrice = #{totalPrice},  inputDate = #{inputDate}, finishDate = #{finishDate},
+        supplier_id = #{supplier.id}, inputUser_id = #{inputUser.id}, merchandiser_id = #{merchandiser.id}
+        WHERE id = #{id}
+    </update>
+    <sql id = "fieldSql">
+        p.id, p.serialNumber, p.status, p.totalAmount, p.totalPrice, p.inputDate, p.finishDate,
+        s.id as supplier_id, i.id as inputUser_id, m.id as merchandiser_id
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="fieldSql"/>
+        FROM procurementRequest p
+        LEFT JOIN supplier s ON s.id = p.supplier_id
+        LEFT JOIN employee i ON i.id = p.inputUser_id
+        LEFT JOIN employee m ON m.id = p.merchandiser_id
+        WHERE p.id = #{id}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM procurementRequest p
+        LEFT JOIN supplier s ON s.id = p.supplier_id
+        LEFT JOIN employee i ON i.id = p.inputUser_id
+        LEFT JOIN employee m ON m.id = p.merchandiser_id
+    </select>
+    <sql id="conditionSql">
+        <where>
+            <if test="startDate!= null">
+                AND p.inputDate &gt;= #{startDate}
+            </if>
+            <if test="endDate!= null">
+                AND p.inputDate &lt;= #{endDate}
+            </if>
+            <if test="keyword!= null">
+                AND s.name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+    <select id = "queryByConditionCount" resultType="Long">
+        SELECT COUNT(*) FROM procurementRequest p
+        LEFT JOIN supplier s ON s.id = p.supplier_id
+        LEFT JOIN employee i ON i.id = p.inputUser_id
+        LEFT JOIN employee m ON m.id = p.merchandiser_id
+        <include refid="conditionSql"/>
+    </select>
+    <select id = "queryByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/>
+        FROM procurementRequest p
+        LEFT JOIN supplier s ON s.id = p.supplier_id
+        LEFT JOIN employee i ON i.id = p.inputUser_id
+        LEFT JOIN employee m ON m.id = p.merchandiser_id
+        <include refid = "conditionSql"/>
+        <if test="currentPage!=null">
+            limit #{start}, #{pageSize}
+        </if>
+    </select>
+    <insert id="handlerRelation">
+        INSERT INTO procurementRequest_items(procurementRequest_id, items_id) VALUES(#{procurementRequestId}, #{itemsId})
+    </insert>
+    <delete id="deleteItemsByProcurementRequestId">
+        DELETE FROM procurementRequest_items WHERE procurementRequest_id = #{id}
+    </delete>
+    <select id="getMaxId" resultType="int">
+        SELECT MAX(id) FROM procurementRequest
+    </select>
+    <select id="queryProcurementRequestByProcurementRequestItemId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM procurementRequest p
+        LEFT JOIN supplier s ON s.id = p.supplier_id
+        LEFT JOIN employee i ON i.id = p.inputUser_id
+        LEFT JOIN employee m ON m.id = p.merchandiser_id
+        WHERE p.id = (SELECT procurementRequest_id FROM procurementRequest_items WHERE items_id = #{itemsId})
+    </select>
+    <select id="queryProcurementRequestBySupplierId" resultMap="BaseResultMap">
+        SELECT <include refid="fieldSql"/> FROM procurementRequest p
+        JOIN supplier s ON s.id = p.supplier_id
+        JOIN employee i ON i.id = p.inputUser_id
+        LEFT JOIN employee m ON m.id = p.merchandiser_id
+        WHERE p.supplier_id = #{supplierId}
+    </select>
+</mapper>

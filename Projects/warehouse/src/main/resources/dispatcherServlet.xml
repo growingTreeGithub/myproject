@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        <!--to scan annotation to do inverse of Control in spring.That is to put the creation right of object to spring framework.-->
+        <context:component-scan base-package="org.construction.wms"/>
+
+        <!--mvc:annotation driven enable support for processing requests with controllers annotation(@Controller)
+        ,request mapping annotations(@RequestMapping) and other MVC annotations.-->
+       <mvc:annotation-driven conversion-service="conversionService">
+                <mvc:message-converters>
+                    <!--this converter is used to handle conversion between java objects and HTTP request/response bodies-->
+                        <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                            <!--it specifies UTF-8 encoding should be used for converting strings return value.-->
+                                <property name="defaultCharset" value="UTF-8"/>
+                        </bean>
+                    <!--this converter is used to convert between java objects and JSON-->
+                        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                            <!--it specifies UTF-8 encoding should be used for converting JSON return value-->
+                            <property name="defaultCharset" value="UTF-8"/>
+                        </bean>
+                </mvc:message-converters>
+        </mvc:annotation-driven>
+
+        <!--dispatcher Servlet cannot handle static resources such as html, js.
+        let static resources to be handled by default servlet in Tomcat server.-->
+        <mvc:default-servlet-handler/>
+
+        <!--this viewResolver is used to set the common prefix and suffix of view name in Controller-->
+        <!--For example, return value of ModelAndView in Controller, return new ModelAndView("brandName/list");-->
+        <!--return value of String in Controller, return "brandName/list";-->
+        <!--this can reduce repetition in writing the prefix and suffix. full path name: /WEB-INF/views/brandName/list.jsp
+         to brandName/list-->
+        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                <property name="prefix" value="/WEB-INF/views/"/>
+                <property name="suffix" value=".jsp"/>
+        </bean>
+
+        <!--to configure interceptor-->
+        <mvc:interceptors>
+            <mvc:interceptor>
+                <!--path that needed to be intercepted-->
+                <!--** represent all the content below the current directory (including sub-directory)-->
+                <mvc:mapping path="/**"/>
+                <!--exclude to intercept the content below the directory asset-->
+                <mvc:exclude-mapping path="/asset/**"/>
+                <!--exclude to intercept login method under employeeController-->
+                <mvc:exclude-mapping path="/employee/login"/>
+                <!--configure interceptor class. It allow to configure more than one interceptor here.-->
+                <bean class="org.construction.wms.web.interceptor.LoginInterceptor"/>
+            </mvc:interceptor>
+        </mvc:interceptors>
+        <!--By importing applicationContext.xml file into dispatcherServlet.xml configuration file, this can
+        include the beans and other configuration elements defined in applicationContext.xml within the scope
+        of the DispatcherServlet. This allows the DispatcherServlet to access and utilize the beans and configurations
+        defined in the imported files, providing a unified configuration for the servlet.-->
+        <import resource="classpath:applicationContext.xml"/>
+</beans>

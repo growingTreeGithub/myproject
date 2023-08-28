@@ -1,0 +1,33 @@
+/*CSS reset*/
+body, dl, dt, dd, ul, ol, li,
+h1, h2, h3, h4, h5, h6, pre, p,
+form, button, input, textarea, select,
+table, tr, td, th{
+    margin:0;
+    padding:0;
+}
+/*to remove the dot sign of list item*/
+li{
+    list-style:none
+}
+/*to remove the underline effect in tag a*/
+a{
+    text-decoration: none;
+}
+/*to combine the border of each row and column in the table*/
+table{
+    border-collapse: collapse;
+    border-spacing:0;
+}
+
+/*set the line drawn outside the element's border to none*/
+button, input, textarea, select, a{
+    outline:none;
+}
+
+img{
+    /*to remove border of image*/
+    border:none;
+    /*to reset inline element to be align from baseline to top*/
+    vertical-align:top;
+}

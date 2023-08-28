@@ -1,0 +1,225 @@
+/*set the css for input jsp of different modules*/
+
+/*css for the division area of the inputForm in input.jsp*/
+#inputForm{
+    /*to left some space for left and right in input.jsp*/
+    width:96%;
+    /*set both margin-top and margin-bottom to be zero, margin-left and margin-right to be auto
+    in order to set the content to display central in the div, need to define the width of the element
+    before centering the element by margin:0 auto*/
+    margin:0 auto;
+    /*set any content which is outside this div to be hidden*/
+    overflow:hidden;
+}
+
+/*css for navigation bar inside the inputForm in input.jsp*/
+#navigation{
+    /*set the height for navigation bar*/
+    height:55px;
+    /*set the border bottom line of navigation bar to display as the following style*/
+    border-bottom: 1px solid #e9e9e9;
+}
+
+/*css for title in the navigation bar inside the inputForm*/
+#nav_title{
+    /*set padding-left to be 20px to left some space between the left menu bar and navigation title*/
+    padding-left:20px;
+    /*set the font-size of the title*/
+    font-size:20px;
+    /*set the line-height same as the height of the navigation bar so that the title can be vertical align
+    inside the navigation bar*/
+    line-height:55px;
+    /*set the font-family of the title*/
+    font-family: "Segoe UI";
+}
+
+/*css for the left <td> tag inside a row in a table*/
+.text_left{
+    /*set the width of <td> to be 250px*/
+    width:250px;
+    /*set the font family of the words inside <td>*/
+    font-family:"Segoe UI";
+    /*set the font size of the words inside <td>*/
+    font-size:15px;
+    /*set the height of line box*/
+    line-height:35px;
+    /*set the horizontal alignment of the content to the right*/
+    text-align:right;
+}
+
+/*css for the right <td> tag inside a row in a table*/
+.text_right{
+    /*set the font family of the words inside <td>*/
+    font-family:"Segoe UI";
+    /*set the horizontal alignment of the content to the left*/
+    text-align: left;
+}
+
+/*css for the input box inside the input.jsp*/
+.input_ui{
+    /*set the width of the input box*/
+    width:120px;
+    /*set the height of the input box*/
+    height:30px;
+    /*set the space around the elements and outside the border of the element to be 5px*/
+    margin:5px;
+    /*set the space between the content and border to be 5px*/
+    padding:5px;
+    /*set the width, line style and color of the border of the input box*/
+    border:1px solid #cccccc;
+}
+
+/*css for the text area inside constructionSite/input.jsp */
+textarea_ui{
+    /*set the space around the elements and outside the border of the element to be 5px*/
+    margin:5px;
+    /*set the space between the content and border to be 5px*/
+    padding:5px;
+    /*set the width, line style and color of the border of the text area*/
+    border:1px solid #cccccc;
+}
+
+/*css for the select box inside input.jsp*/
+.select_ui{
+    /*set the height of the select box to be 30px*/
+    height:30px;
+    /*set the space around the elements and outside the border of the element to be 5px*/
+    margin:5px;
+    /*set the space between the content and border to be 5px*/
+    padding:5px;
+}
+
+/*css for the checkbox inside input.jsp*/
+.checkbox_ui{
+    /*set the space around the elements and outside the border of the element to be 5px*/
+    margin:5px;
+}
+
+/*css for the button inside input.jsp*/
+.button_ui{
+    /*set the width of the button to be 140px*/
+    width:140px;
+    /*set the height of the button to be 30px*/
+    height:30px;
+    /*set the space on top of an element and outside the border of the element to be 10px*/
+    margin-top:10px;
+    /*set the space on the bottom of an element and outside the border of an element to be 10px*/
+    margin-bottom:10px;
+    /*set the distance between lines of text*/
+    line-height:30px;
+    /*set the font family of the text inside the button*/
+    font-family:"Segoe UI";
+    /*show an image of a pointing hand when the mouse pointer is over an element*/
+    cursor:pointer;
+}
+
+/*css for the return button in read.jsp in different modules*/
+.return_button_ui{
+    /*set the width of the button to be 250px*/
+    width:250px;
+    /*set the height of the button to be 30px*/
+    height:30px;
+    /*set the space on top of an element and outside the border of the element to be 10px*/
+    margin-top:10px;
+    /*set the space on the bottom of an element and outside the border of an element to be 10px*/
+    margin-bottom:10px;
+    /*set the distance between lines of text*/
+    line-height:30px;
+    /*set the font family of the text inside the button*/
+    font-family:"Segoe UI";
+    /*show an image of a pointing hand when the mouse pointer is over an element*/
+    cursor:pointer;
+}
+
+/*css for the multiselect box in input.jsp. For example, employee/input.jsp*/
+.multiselect_ui{
+    /*set the width of the multiselect box to be 300px*/
+    width:300px;
+    /*set the height of the multiselect box to be 280px*/
+    height:280px;
+    /*set the space around the elements and outside the border of the element to be 5px*/
+    margin:5px;
+    /*to have adjustment bar so that the overflow words in multiselect box can be seen by adjusting the bar to the right*/
+    overflow-x:auto;
+}
+
+/*css for the direction button to select one or more items from one multiselect box to another multiselect box
+in input.jsp. For example, role/input.jsp*/
+.direction_button{
+    /*set the space around the elements and outside the border of the element to be 5px*/
+    margin:5px;
+}
+
+/*css for region including the table to store items in input.jsp of inBoundOrder, outBoundOrder, procurementRequest*/
+.tableResult{
+    /*set the space on top of an element and outside the border of the element to be 5px*/
+    margin-top: 5px;
+    /*set the content overflow the region of tableResult to be hidden*/
+    overflow:hidden;
+}
+
+/*css for the table of showing items in input.jsp of inBoundOrder, outBoundOrder, procurementRequest*/
+.tableResult .table{
+    /*set both margin-top and margin-bottom to be zero, margin-left and margin-right to be auto*/
+    margin:0 auto;
+}
+
+/*set the background-color of thead in table of tableResult*/
+.tableResult .table thead{
+    background-color: #548eff;
+}
+
+/*css for <th> tag inside <thead> of the table in tableResult */
+.tableResult .table thead th{
+    /*set the height of <th> to be 35px*/
+    height:35px;
+    /*set the font-size of the word inside <th> to be 17px*/
+    font-size:17px;
+    /*set the height of a line-box*/
+    line-height:17px;
+    /*set the color of the word inside <th> tag*/
+    color:white;
+    /*set the width, line style and color of the border of the <th> element*/
+    border:1px solid #09099c;
+}
+
+/*css for <td> inside a row of table in tableResult */
+.tableResult .table tbody td{
+    /*set the height of <td> to be 35px*/
+    height:35px;
+    /*set the font size of word inside <td> to be 17px*/
+    font-size: 17px;
+    /*set the height of a line-box*/
+    line-height:17px;
+    /*set the font family of the text inside <td>*/
+    font-family: "Segoe UI";
+    /*set the horizontal alignment of text in <td> to be center */
+    text-align: center;
+    /*set the width, line style and color of the border of the <td> element*/
+    border:1px solid #e9e9e9
+}
+
+/*==========================================================*/
+/*CSS use in jquery validation*/
+/*please refer to official website in jquery validation. form label does not need the use of label .error.*/
+form label {
+    display: inline-block;
+    width: 100px;
+}
+
+form div {
+    margin-bottom: 10px;
+}
+
+/*css for the error message alert appear if input submitted in input.jsp does not fulfill requirement*/
+.error {
+    /*set the color of the error message to be red*/
+    color: red;
+    /*set the space on left of an element and outside the border of the element to be 5px*/
+    margin-left: 5px;
+}
+
+/*css for the error message alert display in one line*/
+label.error {
+    display: inline;
+}

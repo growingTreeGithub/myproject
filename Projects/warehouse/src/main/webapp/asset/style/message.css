@@ -1,0 +1,40 @@
+/*set the css for nopermission.jsp of warehouse management system*/
+
+/*css for <div class="message"> that enclose the warning message in nopermission.jsp*/
+.message{
+    /*set the height of the <div class="message">*/
+    height:300px;
+    /*set the width of the <div class="message">*/
+    width:300px;
+    /*set the space between the top of the content inside <div class="message"> and the top border
+    of <div class="message"> to be 50 px
+    */
+    padding-top: 50px;
+    /*set the space between the left of the content inside <div class="message"> and the left border
+    of <div class="message"> to be 40px*/
+    padding-left: 40px;
+    /*set the content inside <div class="message"> to be centered align horizontally*/
+    margin:0 auto;
+    /*set the font family of text inside <div class="message">*/
+    font-family:"Segoe UI";
+}
+
+/*css for the warning image for the user who have no permission to operate*/
+.warning{
+    /*set the <img> tag to be inline with other element inside <div class="message">*/
+    display:inline-block;
+    /*set the height of the warning image*/
+    height:20px;
+    /*set the width of the warning image*/
+    width:20px;
+    /*set the space between the top of the warning image and the top border of the content to be 5px*/
+    margin-top:5px;
+    /*set the space between the left of the warning image and the left border of the content to be 10px*/
+    margin-left:10px;
+    /*set the background image to display exclamation warning image*/
+    background-image:url("/asset/images/exclamation-octagon.svg");
+    /*set the background-image to display center in <img> tag*/
+    background-position:center;
+    /*set the background-image not to repeat showing inside <img> tag*/
+    background-repeat:no-repeat;
+}
